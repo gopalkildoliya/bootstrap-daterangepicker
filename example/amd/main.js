@@ -54,6 +54,12 @@ $(document).ready(function() {
     if ($('#timePicker24Hour').is(':checked'))
       options.timePicker24Hour = true;
 
+    if (! $('#showEndDateBlank').is(':checked'))
+      options.showEndDateBlank = false;
+
+    if ($('#showHoverDateChange').is(':checked'))
+      options.showHoverDateChange = true;
+
     if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
       options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
 

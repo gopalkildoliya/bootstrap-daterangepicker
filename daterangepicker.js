@@ -49,6 +49,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.showEndDateBlank = true;
+        this.showHoverDateChange = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -248,6 +250,12 @@
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
+
+        if (typeof options.showEndDateBlank === 'boolean')
+            this.showEndDateBlank = options.showEndDateBlank;
+
+        if (typeof options.showHoverDateChange === 'boolean')
+            this.showHoverDateChange = options.showHoverDateChange;
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
@@ -1023,7 +1031,7 @@
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
             if (this.endDate)
                 this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
-            else
+            else if (this.showEndDateBlank)
                 this.container.find('input[name=daterangepicker_end]').val('');
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -1258,11 +1266,13 @@
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             // Remove hover effect that changes date in input field of calendar as we hover over it.
-            /*if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
-            } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
-            }*/
+            if (this.showHoverDateChange) {
+                if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+                    this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
+                    this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                }
+            }
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
